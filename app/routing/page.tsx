@@ -33,15 +33,6 @@ function RoutingContent() {
   const [locError, setLocError] = useState('')
   const [isLocLoading, setIsLocLoading] = useState(false)
 
-export default function RoutingPage() {
-  const searchParams = useSearchParams()
-  const { hospitals } = useHospitals()
-  const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null)
-  const [locError, setLocError] = useState('')
-  const [isLocLoading, setIsLocLoading] = useState(false)
-  const [emergencyLevel, setEmergencyLevel] = useState('URGENT')
-  const [requiredSpecialty, setRequiredSpecialty] = useState('all')
-
   const handleCallNow = () => {
     if (bestHospital) {
       console.log("[v0] Calling hospital:", bestHospital.phone);
