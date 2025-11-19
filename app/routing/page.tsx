@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Navbar from '@/components/navbar'
 import { Card } from '@/components/ui/card'
@@ -23,6 +23,15 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
 }
+
+function RoutingContent() {
+  const searchParams = useSearchParams()
+  const { hospitals } = useHospitals()
+  const [emergencyLevel, setEmergencyLevel] = useState('URGENT')
+  const [requiredSpecialty, setRequiredSpecialty] = useState('all')
+  const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null)
+  const [locError, setLocError] = useState('')
+  const [isLocLoading, setIsLocLoading] = useState(false)
 
 export default function RoutingPage() {
   const searchParams = useSearchParams()
@@ -254,5 +263,13 @@ export default function RoutingPage() {
         )}
       </main>
     </div>
+  )
+}
+
+export default function RoutingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RoutingContent />
+    </Suspense>
   )
 }
