@@ -1,8 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/components/auth-context'
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
@@ -14,8 +12,6 @@ import { useHospitals } from '@/lib/hospital-context'
 import { SPECIALTIES } from '@/lib/mock-data'
 
 export default function Dashboard() {
-  const router = useRouter()
-  const { isAuthenticated, isLoading } = useAuth()
   const { hospitals } = useHospitals()
   const [searchLocation, setSearchLocation] = useState('')
   const [selectedSpecialty, setSelectedSpecialty] = useState('all')
@@ -30,16 +26,6 @@ export default function Dashboard() {
       return matchesLocation && matchesSpecialty
     })
   }, [hospitals, searchLocation, selectedSpecialty])
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.replace('/login')
-    }
-  }, [isAuthenticated, isLoading, router])
-
-  if (!isAuthenticated) {
-    return null // Prevent flashing dashboard before redirect
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-surface to-background">
